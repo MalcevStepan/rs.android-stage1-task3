@@ -1,9 +1,24 @@
 package subtask4
 
-class SquareDecomposer {
+import kotlin.math.pow
+import kotlin.math.sqrt
 
-    // TODO: Complete the following function
+class SquareDecomposer {
     fun decomposeNumber(number: Int): Array<Int>? {
-        throw NotImplementedError("Not implemented")
+        return decompose(number.toDouble().pow(2.0), number - 1)
+    }
+
+    private fun decompose(value: Double, number: Int): Array<Int>? {
+        for (i in number downTo 1) {
+            val diff = value - i.toDouble().pow(2.0)
+            when {
+                diff == 0.0 -> return arrayOf(i)
+                diff < 0.0 -> return null
+            }
+            val s = sqrt(diff).toInt()
+            val res = decompose(diff, if (s >= i) i - 1 else s)
+            if (res != null) return res + arrayOf(i)
+        }
+        return null
     }
 }
